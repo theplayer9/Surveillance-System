@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import styles from '../styles/ReportComplaint.module.css'
 
 const ReportComplaint = () => {
   const {
