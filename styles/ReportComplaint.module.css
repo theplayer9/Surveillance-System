@@ -9,6 +9,9 @@
   .form h2 {
     @apply text-xl font-bold mb-4;
   }
+  .form h4 {
+    @apply mt-2 text-gray-700 text-left text-2xl;
+  }
   
   /** Input group */
   .inputGroup {

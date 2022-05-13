@@ -5,12 +5,10 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import styles from '../styles/ReportComplaint.module.css'
 // ------for PrimeReact---------
-import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
-import "primereact/resources/primereact.min.css";                  //core css
-import "primeicons/primeicons.css";                                //icons
-import { FileUpload } from 'primereact/fileupload';
-  
-
+import 'primereact/resources/themes/lara-light-indigo/theme.css' //theme
+import 'primereact/resources/primereact.min.css' //core css
+import 'primeicons/primeicons.css' //icons
+import { FileUpload } from 'primereact/fileupload'
 
 const ReportComplaint = () => {
   const {
@@ -27,13 +25,12 @@ const ReportComplaint = () => {
 
   const Input = ({ label, required, type, placeholder }) => (
     <div>
-      <legend >{label}</legend>
-      <input 
+      <legend>{label}</legend>
+      <input
         {...register(label, { required })}
         className={errors[label] && styles.inputInvalid}
         type={type}
         placeholder={placeholder}
-        
       />
       {/* include validation with required or other standard HTML validation rules */}
       {errors[label] && <span>mandatory</span>}
@@ -65,7 +62,12 @@ const ReportComplaint = () => {
         type="email"
         placeholder="exemple@exemple.com"
       />
-      <Input label="Phone Number :" required type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" />
+      <Input
+        label="Phone Number :"
+        required
+        type="tel"
+        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+      />
     </section>
   )
 
@@ -161,15 +163,19 @@ const ReportComplaint = () => {
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
           rel="stylesheet"
         />
-        
       </Head>
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Navbar />
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>   
-         {/* "handleSubmit" will validate your inputs before invoking "onSubmit"  */}
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          {/* "handleSubmit" will validate your inputs before invoking "onSubmit"  */}
           <h2>User Register</h2>
           {fieldGroups[step]}
-          {step===0 && <FileUpload name="demo" url="./upload" disabled={!isValid} ></FileUpload>}
+          {step === 0 && (
+            <div>
+              <h4> Choose the image and press Upload:</h4>{' '}
+              <FileUpload name="demo" url="./upload" disabled={!isValid} />
+            </div>
+          )}
           <Navigation />
           <Reference />
         </form>
