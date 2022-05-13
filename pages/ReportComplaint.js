@@ -4,11 +4,12 @@ import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import styles from '../styles/ReportComplaint.module.css'
-// ------for PrimeREact---------
+// ------for PrimeReact---------
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
- 
+import { FileUpload } from 'primereact/fileupload';
+  
 
 
 const ReportComplaint = () => {
@@ -32,6 +33,7 @@ const ReportComplaint = () => {
         className={errors[label] && styles.inputInvalid}
         type={type}
         placeholder={placeholder}
+        
       />
       {/* include validation with required or other standard HTML validation rules */}
       {errors[label] && <span>mandatory</span>}
@@ -46,6 +48,7 @@ const ReportComplaint = () => {
         label="Full name :"
         required
         type="text"
+        isValid
         placeholder="Ex: Sarthak Gupta"
       />
       <Input label="Birthday :" required type="date" placeholder="dd/mm/aaa" />
@@ -166,6 +169,7 @@ const ReportComplaint = () => {
          {/* "handleSubmit" will validate your inputs before invoking "onSubmit"  */}
           <h2>User Register</h2>
           {fieldGroups[step]}
+          {step===0 && <FileUpload name="demo" url="./upload" disabled={!isValid} ></FileUpload>}
           <Navigation />
           <Reference />
         </form>
