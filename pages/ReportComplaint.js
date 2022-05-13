@@ -19,7 +19,11 @@ const ReportComplaint = () => {
 
   //  ------------Will hadle OnSubmit-------------
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit =async(data) =>{
+    console.log(data)
+    // const JSONdata = JSON.stringify(data)
+    // fetch("https://surveillance-system-4b551-default-rtdb.firebaseio.com/userDataRecords.json")
+  }
 
   /** Input field component */
 
@@ -172,7 +176,8 @@ const ReportComplaint = () => {
           {fieldGroups[step]}
           {step === 0 && (
             <div>
-              <h4> Choose the image and press Upload:</h4>{' '}
+              <h4> Choose the image and press Upload:</h4>
+               {/* &nbsp; */}
               <FileUpload name="demo" url="./upload" disabled={!isValid} />
             </div>
           )}
