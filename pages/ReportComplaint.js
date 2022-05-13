@@ -4,6 +4,12 @@ import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import styles from '../styles/ReportComplaint.module.css'
+// ------for PrimeREact---------
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";                                //icons
+ 
+
 
 const ReportComplaint = () => {
   const {
@@ -152,6 +158,7 @@ const ReportComplaint = () => {
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
           rel="stylesheet"
         />
+        
       </Head>
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Navbar />
