@@ -4,26 +4,76 @@ import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import styles from '../styles/ReportComplaint.module.css'
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+import { collection, addDoc } from 'firebase/firestore'
+
 // ------for PrimeReact---------
 import 'primereact/resources/themes/lara-light-indigo/theme.css' //theme
 import 'primereact/resources/primereact.min.css' //core css
 import 'primeicons/primeicons.css' //icons
 import { FileUpload } from 'primereact/fileupload'
+import { data } from 'autoprefixer'
 
 const ReportComplaint = () => {
+
+// ------react-hook-form------
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: 'all' })
 
+  //  -----firebase------
+  const firebaseConfig = {
+    apiKey: 'AIzaSyDmcloY5uh8vLo7j66YaMdqs-IkHA57c9s',
+    authDomain: 'surveillance-system-4b551.firebaseapp.com',
+    databaseURL:
+      'https://surveillance-system-4b551-default-rtdb.firebaseio.com',
+    projectId: 'surveillance-system-4b551',
+    storageBucket: 'surveillance-system-4b551.appspot.com',
+    messagingSenderId: '859476257538',
+    appId: '1:859476257538:web:a93ca347ad88d8ba24701b',
+    measurementId: 'G-7CP7JYS6R1',
+  }
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig)
+  // Initialize Cloud Firestore and get a reference to the service
+  const db = getFirestore(app)
+
   //  ------------Will hadle OnSubmit-------------
 
-  const onSubmit =async(data) =>{
+  // const onSubmit = async (data) => {
+  //   console.log(data)
+  //   // const JSONdata = JSON.stringify(data)
+  //   const res = await fetch(
+  //     'https://surveillance-system-4b551-default-rtdb.firebaseio.com/userDataRecords.json',
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSONdata,
+  //     }
+  //   )
+  const onSubmit = async (data) => {
     console.log(data)
-    // const JSONdata = JSON.stringify(data)
-    // fetch("https://surveillance-system-4b551-default-rtdb.firebaseio.com/userDataRecords.json")
+    try {
+      const docRef = await addDoc(collection(db, "users"), data);
+      console.log(docRef)
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.log("Error adding document: ", e);
+    }
   }
+
+  // if (res) {
+
+  //   alert('Data Stored')
+  //   data={}
+  // } else {
+  //   alert('Please fill the data')
+  // }
 
   /** Input field component */
 
@@ -177,7 +227,7 @@ const ReportComplaint = () => {
           {step === 0 && (
             <div>
               <h4> Choose the image and press Upload:</h4>
-               {/* &nbsp; */}
+              {/* &nbsp; */}
               <FileUpload name="demo" url="./upload" disabled={!isValid} />
             </div>
           )}
