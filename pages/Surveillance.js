@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 import Navbar from './Navbar'
 import Head from 'next/head'
 import * as faceapi  from 'face-api.js'
