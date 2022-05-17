@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Head from 'next/head'
+import * as faceapi  from 'face-api.js'
+
 
 const Surveillance = () => {
   return (
@@ -12,6 +14,9 @@ const Surveillance = () => {
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Navbar />
         <p>This is the surveillance page</p>
+        <div>
+
+        </div>
       </main>
     </div>
   )
