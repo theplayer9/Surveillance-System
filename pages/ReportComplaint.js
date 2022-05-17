@@ -16,8 +16,7 @@ import { FileUpload } from 'primereact/fileupload'
 import { data } from 'autoprefixer'
 
 const ReportComplaint = () => {
-
-// ------react-hook-form------
+  // ------react-hook-form------
   const {
     register,
     handleSubmit,
@@ -59,21 +58,19 @@ const ReportComplaint = () => {
   const onSubmit = async (data) => {
     console.log(data)
     try {
-      const docRef = await addDoc(collection(db, "users"), data);
+      const docRef = await addDoc(collection(db, 'users'), data)
       console.log(docRef)
-      console.log("Document written with ID: ", docRef.id);
+      console.log('Document written with ID: ', docRef.id)
+      if (docRef) {
+        alert('Data Stored')
+        data = {}
+      } else {
+        alert('Please fill the data')
+      }
     } catch (e) {
-      console.log("Error adding document: ", e);
+      console.log('Error adding document: ', e)
     }
   }
-
-  // if (res) {
-
-  //   alert('Data Stored')
-  //   data={}
-  // } else {
-  //   alert('Please fill the data')
-  // }
 
   /** Input field component */
 
