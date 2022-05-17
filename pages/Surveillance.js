@@ -11,6 +11,7 @@ const Surveillance = () => {
       </Head>
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Navbar />
+        <p>This is the surveillance page</p>
       </main>
     </div>
   )
