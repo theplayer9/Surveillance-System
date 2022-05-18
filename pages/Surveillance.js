@@ -3,7 +3,6 @@ import Navbar from './Navbar'
 import Head from 'next/head'
 import * as faceapi from 'face-api.js'
 
-
 const Surveillance = () => {
   const [initializing, setInitializing] = useState(false)
   const videoRef = useRef()
@@ -16,26 +15,41 @@ const Surveillance = () => {
     const loadModels = async () => {
       // const MODEL_URL = process.env.PUBLIC_URL + '/models';
       setInitializing(true)
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-        faceapi.nets.faceExpressionNet.loadFromUri('/models'),
-      ],console.log(faceapi.nets),
+      Promise.all(
+        [
+          await faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+          await faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+          await faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+          await faceapi.nets.faceExpressionNet.loadFromUri('/models'),
+        ],
+        console.log(faceapi.nets)
       ).then(startVideo)
     }
     loadModels()
   }, [])
 
   const startVideo = () => {
-    navigator.mediaDevices.getUserMedia(
-      {
+    navigator.mediaDevices
+      .getUserMedia({
         video: {},
+      })
+      .then((stream) => {
+        videoRef.current.srcObject = stream
+        // videoRef.current.play()
+      })
+  }
+
+  const handleVideoOnPlay = () => {
+    setInterval(async () => {
+      if (initializing) {
+        setInitializing(false)
       }
-    ).then((stream) => {
-      videoRef.current.srcObject = stream;
-      // videoRef.current.play()
-    })
+      const detections = await faceapi
+        .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions()
+      console.log(detections)
+    }, 100)
   }
 
   return (
@@ -58,6 +72,7 @@ const Surveillance = () => {
             muted
             height={videoHeight}
             width={videoWidth}
+            onPlay={handleVideoOnPlay}
           />
           <canvas ref={canvasRef} />
         </div>
