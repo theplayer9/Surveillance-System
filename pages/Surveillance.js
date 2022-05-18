@@ -1,30 +1,42 @@
-import React, {useState,useEffect,useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Navbar from './Navbar'
 import Head from 'next/head'
-import * as faceapi  from 'face-api.js'
+import * as faceapi from 'face-api.js'
 
 
 const Surveillance = () => {
+  const [initializing, setInitializing] = useState(false)
+  const videoRef = useRef()
+  const canvasRef = useRef()
+  const videoHeight = 480
+  const videoWidth = 640
 
-  const [initializing, setInitializing] = useState(false);
-  const videoRef = useRef();
-  const canvasRef = useRef();
-  const videoHeight = 480;
-  const videoWidth = 640;
-
-  useEffect(()=>{
-    const loadModels = async()=>{
-      const MODEL_URL = process.env.PUBLIC_URL + '/models';
-      setInitializing(true);
-      Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-
-      ])
+  // ---------loading the MODELS----------
+  useEffect(() => {
+    const loadModels = async () => {
+      // const MODEL_URL = process.env.PUBLIC_URL + '/models';
+      setInitializing(true)
+      await Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+        faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+        faceapi.nets.faceExpressionNet.loadFromUri('/models'),
+      ],console.log(faceapi.nets),
+      ).then(startVideo)
     }
-  },[])
+    loadModels()
+  }, [])
+
+  const startVideo = () => {
+    navigator.mediaDevices.getUserMedia(
+      {
+        video: {},
+      }
+    ).then((stream) => {
+      videoRef.current.srcObject = stream;
+      // videoRef.current.play()
+    })
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
@@ -36,9 +48,18 @@ const Surveillance = () => {
         <Navbar />
         <p>This is the surveillance page</p>
         <div>
-            <span> {initializing ? " PROJECT is initializing" : "PROJECT is ready"}</span>
-            <video ref={videoRef} autoPlay muted height={videoHeight} width={videoWidth}/>
-            <canvas ref={canvasRef} />
+          <span>
+            {' '}
+            {!initializing ? ' PROJECT is initializing' : 'PROJECT is ready'}
+          </span>
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            height={videoHeight}
+            width={videoWidth}
+          />
+          <canvas ref={canvasRef} />
         </div>
       </main>
     </div>
