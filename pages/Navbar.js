@@ -5,7 +5,11 @@ import Link from 'next/link'
 
 const Navbar = () => {
   return (
-    <div>
+    <div style={{
+      // minHeight: "10vh",
+      display: "flex",
+      flexDirection: "column",
+    }}>
       <AppBar position="fixed" color="transparent">
         <Container>
           <Toolbar>
