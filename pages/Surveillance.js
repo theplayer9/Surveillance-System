@@ -44,10 +44,23 @@ const Surveillance = () => {
       if (initializing) {
         setInitializing(false)
       }
+      canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current)
+      const displaySize ={
+        width: videoWidth,
+        height: videoHeight
+      }
+      faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
-        .withFaceExpressions()
+        .withFaceExpressions();
+        const resizeDetections = faceapi.resizeResults(detections,displaySize);
+        canvasRef.current.getContext('2d').clearRect(0,0,videoWidth,videoHeight);
+        faceapi.draw.drawDetections(canvasRef.current, resizeDetections);
+        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizeDetections);
+        faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections);
+
+
       console.log(detections)
     }, 100)
   }
@@ -61,11 +74,11 @@ const Surveillance = () => {
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
         <Navbar />
         <p>This is the surveillance page</p>
-        <div>
           <span>
             {' '}
-            {!initializing ? ' PROJECT is initializing' : 'PROJECT is ready'}
+            {initializing ? ' PROJECT is initializing' : 'PROJECT is ready'}
           </span>
+        <div style={{display: "flex", flexDirection: "row"}}>
           <video
             ref={videoRef}
             autoPlay
