@@ -9,11 +9,11 @@ const Surveillance = () => {
   const canvasRef = useRef()
   const videoHeight = 480
   const videoWidth = 640
+  let ref = null;
 
   // ---------loading the MODELS----------
   useEffect(() => {
     const loadModels = async () => {
-      // const MODEL_URL = process.env.PUBLIC_URL + '/models';
       setInitializing(true)
       Promise.all(
         [
@@ -26,6 +26,13 @@ const Surveillance = () => {
       ).then(startVideo)
     }
     loadModels()
+    // returned function will be called on component unmount 
+    return () => {
+      ref.pause();
+      ref.srcObject.getTracks()[0].stop();
+      console.log(ref)
+    }
+
   }, [])
 
   const startVideo = () => {
@@ -35,33 +42,39 @@ const Surveillance = () => {
       })
       .then((stream) => {
         videoRef.current.srcObject = stream
+        ref =videoRef.current
         // videoRef.current.play()
       })
   }
+
 
   const handleVideoOnPlay = () => {
     setInterval(async () => {
       if (initializing) {
         setInitializing(false)
       }
-      canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current)
+      if (canvasRef && canvasRef.current) {
+        canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current)
+      
       const displaySize ={
         width: videoWidth,
         height: videoHeight
       }
+
       faceapi.matchDimensions(canvasRef.current, displaySize);
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
         .withFaceExpressions();
         const resizeDetections = faceapi.resizeResults(detections,displaySize);
-        canvasRef.current.getContext('2d').clearRect(0,0,videoWidth,videoHeight);
-        faceapi.draw.drawDetections(canvasRef.current, resizeDetections);
-        faceapi.draw.drawFaceLandmarks(canvasRef.current, resizeDetections);
-        faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections);
+        canvasRef && canvasRef.current &&  canvasRef.current.getContext('2d').clearRect(0,0,videoWidth,videoHeight);
+        canvasRef && canvasRef.current &&  faceapi.draw.drawDetections(canvasRef.current, resizeDetections);
+        canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizeDetections);
+        canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections);
 
 
       console.log(detections)
+    }
     }, 100)
   }
 
