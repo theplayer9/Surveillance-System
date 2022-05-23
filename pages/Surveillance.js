@@ -91,7 +91,7 @@ const Surveillance = () => {
             {' '}
             {initializing ? ' PROJECT is initializing' : 'PROJECT is ready'}
           </span>
-        <div style={{display: "flex", flexDirection: "row"}}>
+        <div style={{display: "flex", flexDirection: "row", justifyContent:"center"}}>
           <video
             ref={videoRef}
             autoPlay
@@ -100,7 +100,7 @@ const Surveillance = () => {
             width={videoWidth}
             onPlay={handleVideoOnPlay}
           />
-          <canvas ref={canvasRef} />
+          <canvas ref={canvasRef} style={{ position:"absolute"}} />
         </div>
       </main>
     </div>
