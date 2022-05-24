@@ -9,6 +9,7 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.7.0",
+    "@supabase/supabase-js": "^1.35.3",
     "aws-sdk": "^2.1134.0",
     "face-api.js": "^0.22.2",
     "firebase": "^9.8.1",

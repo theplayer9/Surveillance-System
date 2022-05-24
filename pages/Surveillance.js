@@ -65,14 +65,27 @@ const Surveillance = () => {
       const detections = await faceapi
         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
-        .withFaceExpressions();
+        .withFaceDescriptors();
+        // .withFaceExpressions();
+        if (!detections.length) {
+          return
+        }
+        const faceMatcher = new faceapi.FaceMatcher(detections)
+
+           
+        if (detections) {
+          const bestMatch = faceMatcher.findBestMatch(detections.descriptor)
+          console.log(bestMatch.toString())
+        }
+
+
         const resizeDetections = faceapi.resizeResults(detections,displaySize);
         canvasRef && canvasRef.current &&  canvasRef.current.getContext('2d').clearRect(0,0,videoWidth,videoHeight);
         canvasRef && canvasRef.current &&  faceapi.draw.drawDetections(canvasRef.current, resizeDetections);
         canvasRef && canvasRef.current && faceapi.draw.drawFaceLandmarks(canvasRef.current, resizeDetections);
-        canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections);
-
-
+        //canvasRef && canvasRef.current && faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections);
+        // canvasRef && canvasRef.current && faceapi.draw.drawContour(canvasRef.current, resizeDetections)
+        
       console.log(detections)
     }
     }, 100)
