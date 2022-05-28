@@ -117,9 +117,9 @@ const Surveillance = () => {
         canvasRef &&
           canvasRef.current &&
           faceapi.draw.drawFaceExpressions(canvasRef.current, resizeDetections)
-        canvasRef &&
-          canvasRef.current &&
-          faceapi.draw.drawContour(canvasRef.current, resizeDetections)
+        // canvasRef &&
+        //   canvasRef.current &&
+        //   faceapi.draw.drawContour(canvasRef.current, resizeDetections)
         console.log(detections)
       }
     }, 100)
