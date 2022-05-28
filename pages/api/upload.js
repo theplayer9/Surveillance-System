@@ -1,45 +1,39 @@
-import fs from 'fs'
-import AWS, { Credentials } from 'aws-sdk'
+// import fs from 'fs'
+// import AWS, { Credentials } from 'aws-sdk'
 import formidable from 'formidable'
 
+// import {supabase} from '../supabase'
+// import { createClient } from '@supabase/supabase-js'
+import supabase from "../supabase"
 
 
-const s3Client = new AWS.S3({
-    endpoint: process.env.DO_SPACES_URL,
-    region: "fra1",
-    Credentials: {
-        accessKeyId: process.env.DO_SPACES_ID,
-        secretAccessKey: process.env.DO_SPACES_SECRET
-    }
-})
+// const supabaseKey = process.env.REACT_APP_SUPABASE_KEY
+// const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 
 
-export const config={
-    api:{
-        bodyParser: false
-    }
-}
-
+// // Create a single supabase client for interacting with your database 
+// const supabase = createClient(supabaseKey,supabaseUrl)
 
 export default async function handler(req,res){
     const form = formidable();
     form.parse(req,async(err,fields,files)=>{
-        if(!files.demo){
-            res.status(400).send("No file Uploaded")
-            return;
+        console.log(files, fields, err)
+        if(!files.image){
+            return res.status(400).send("No file Uploaded")
         }
         try{
-            return s3Client.putObject({
-                Bucket: process.env.DO_SPACES_BUCKET,
-                Key: files.demo.originalFilename,
-                Body: fs.createReadStream(files.demo.filepath)
-
-            }, async()=>res.status(201).send("File uploaded"));
-
+            const result = await supabase.storage.from(`avatars`).upload(`User${Math.random()*1000}`, files.demo, {
+                contentType: "image/*",
+                upsert: false
+            });
+            return res.status(200).json({msg: "image uploaded", res: result.data.Key})
         }
         catch(e){
             console.log(e);
-            res.status(500).send("Error uploading file");
+            return res.status(500).send("Error uploading file");
         }
     })
 }
+
+
+

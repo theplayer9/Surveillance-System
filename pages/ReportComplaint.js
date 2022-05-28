@@ -195,8 +195,15 @@ const ReportComplaint = () => {
 
   // ------------For multi-steps--------------
   const [step, setStep] = useState(0)
-
   const fieldGroups = [<PersonFields />, <ContactFields />, <AddressFields />]
+
+  
+  // ------------For changing image state--------------
+
+  const [imageCheck, setImageCheck] = useState(true)
+  const OnChangeImageState = () => {
+    setImageCheck(false)
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
@@ -225,9 +232,18 @@ const ReportComplaint = () => {
             <div>
               <h4> Choose the image and press Upload:</h4>
               {/* &nbsp; */}
-              <FileUpload name="demo" url="./upload" disabled={!isValid} />
+              <FileUpload
+                name="image"
+                url="/api/upload"
+                disabled={!isValid}
+                accept="image/*"
+                
+                // onUpload={OnChangeImageState}
+              />
+              {/* {()=>{{setImageCheck(false)}}} */}
             </div>
           )}
+          {/* {!imageCheck && <Navigation />} */}
           <Navigation />
           <Reference />
         </form>

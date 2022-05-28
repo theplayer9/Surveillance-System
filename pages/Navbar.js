@@ -19,7 +19,7 @@ const Navbar = () => {
               }}
             >
               <Typography variant="h4" component="div" sx={{ display: 'flex' }}>
-                <Image src="/img.jpg" width={70} height={70} />
+                <Image src="/surveillance-camera.png" width={70} height={70} />
               </Typography>
             </div>
             <Paper
@@ -40,15 +40,7 @@ const Navbar = () => {
                 <a> Surveillance</a>
               </Link>
             </Paper>
-            <Paper
-              elevation={3}
-              component="div"
-              sx={{ margin: '0 15px', padding: '5px 5px' }}
-            >
-              <Link href="/ReportComplaint">
-                <a> ReportComplaint</a>
-              </Link>
-            </Paper>
+            
           </Toolbar>
         </Container>
       </AppBar>
